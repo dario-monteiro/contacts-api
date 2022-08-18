@@ -71,6 +71,13 @@ $ docker-compose up
 ```
 (*) Running from docker installs the app in container (is not necessary local install)  
 
+
+## API docs
+To view API docs access this url in browser:  
+
+```bash
+http://localhost:3000/swagger
+```
 ## Test
 
 ```bash
