@@ -1,0 +1,14 @@
+node_modules
+
+# ignore .git and .cache folders
+.git
+# _docker/dump
+# _docker/mysql-db
+
+.env
+.env.example
+.gitignore
+
+docker-compose.yml
+README.md
+**/node_modules

@@ -1,0 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["interactiveTransactions"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model PessoaFisica {
+  id               Int            @id @default(autoincrement())
+  nome             String         @unique
+  endereco         Endereco       @relation(fields: [enderecoId], references: [id])
+  contatos         Contatos       @relation(fields: [contatosId], references: [id])
+  dataNascimento   DateTime?
+  documento        String?
+  tipoDocumento    TipoDocumento  @relation(fields: [tipoDocumentoId], references: [id])
+  empresa          PessoaJuridica @relation(fields: [pessoaJuridicaId], references: [id])
+  cargo            String?
+  relacionamento   Relacionamento @relation(fields: [relacionamentoId], references: [id])
+  site             String?
+  contatosId       Int            @unique
+  tipoDocumentoId  Int
+  pessoaJuridicaId Int            @unique
+  relacionamentoId Int
+  enderecoId       Int
+}
+
+model Contatos {
+  id                  Int           @id @default(autoincrement())
+  telefoneResidencial String?
+  telefoneComercial   String?
+  celular             String
+  emailPessoal        String?
+  emailComercial      String?
+  Pessoa              PessoaFisica?
+}
+
+model Endereco {
+  id          Int              @id @default(autoincrement())
+  logradouro  String
+  numero      Int
+  complemento String?
+  bairro      String?
+  cidade      String
+  estado      String
+  pais        String
+  cep         String
+  Pessoa      PessoaFisica[]
+  Empresa     PessoaJuridica[]
+}
+
+model PessoaJuridica {
+  id          Int           @id @default(autoincrement())
+  razaoSocial String        @unique
+  cnpj        String?       @unique
+  endereco    Endereco      @relation(fields: [enderecoId], references: [id])
+  site        String?
+  Pessoa      PessoaFisica?
+  enderecoId  Int
+}
+
+model TipoDocumento {
+  id        Int            @id @default(autoincrement())
+  descricao String
+  Pessoa    PessoaFisica[]
+}
+
+model Relacionamento {
+  id        Int            @id @default(autoincrement())
+  descricao String
+  Pessoa    PessoaFisica[]
+}
+
+model Usuario {
+  id    Int    @id @default(autoincrement())
+  email String @unique
+  senha String
+}
